@@ -12,7 +12,7 @@ export class StockService {
 
 	constructor(private http: HttpClient) { }
 
-	GetStockData(): Observable<APIResponse<Stock[]>> {
-		return this.http.get<APIResponse<Stock[]>>(`${environment.apiEndpoint}/stock`);
+	GetStockData(type: string): Observable<APIResponse<Stock[]>> {
+		return this.http.get<APIResponse<Stock[]>>(`${environment.apiEndpoint}/stock?type=${type}`);
 	}
 }
