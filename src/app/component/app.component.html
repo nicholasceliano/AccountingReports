@@ -1,0 +1,22 @@
+<div class="d-flex">
+	<div id="navPanel" class="mr-3">
+		<div>
+			<h4 class="text-nowrap text-center overflow-hidden mt-3 mb-3">{{appTitle}}</h4>
+		</div>
+		<div>
+			<div class="list-group">
+				<a href="#" class="list-group-item list-group-item-action">Expenses</a>
+				<a href="#" class="list-group-item list-group-item-action">Expenses</a>
+				<a href="#" class="list-group-item list-group-item-action">Expenses</a>
+				<a href="#" class="list-group-item list-group-item-action">Expenses</a>
+			</div>
+		</div>
+	</div>
+	<div class="w-100">
+		<div>
+			<i class="material-icons p-2 pointer" (click)="toggle()" title="Menu">menu</i>
+			<i class="material-icons p-2 float-right pointer" (click)="settings()" title="Settings">settings</i>
+		</div>
+		<router-outlet></router-outlet>
+	</div>
+</div>

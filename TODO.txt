@@ -1,0 +1,9 @@
+Chart Ideas:
+https://observablehq.com/@d3/index-chart
+https://observablehq.com/@d3/marimekko-chart
+https://observablehq.com/@d3/grouped-bar-chart
+https://observablehq.com/@d3/line-chart-with-tooltip
+https://observablehq.com/@d3/pie-chart
+https://observablehq.com/@d3/stacked-bar-chart
+https://observablehq.com/@d3/difference-chart
+https://observablehq.com/@d3/change-line-chart

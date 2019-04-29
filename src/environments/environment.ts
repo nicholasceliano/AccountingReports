@@ -4,7 +4,7 @@
 
 export const environment = {
 	production: false,
-	appTitle: 'Accounting Reports',
+	appTitle: 'Accounting Reports(dev)',
 	apiEndpoint: 'http://localhost:3000/taffy',
 	apiKey: 'd5343c28ce754471ab2a4cfac7be57a5'
 };

@@ -1,0 +1,10 @@
+<div class="col-md-12">
+	<div class="row">
+		<div class="col-md-3 p-2" *ngFor="let acc of accounts">
+			<div class="p-2 border rounded">
+			<h5>{{ acc.accountType }}</h5>
+			<h5>{{ acc.accountValue | currency }}</h5>
+		</div>
+		</div>
+	</div>
+</div>

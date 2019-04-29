@@ -1,0 +1,19 @@
+$navPanelWidth: 300px;
+$navBackgroundColor: #b5e4bf;
+
+#navPanel {
+	background-color: $navBackgroundColor;
+	height: 100vh;
+	box-shadow: 10px 0 20px -4px rgba(31, 73, 125, 0.8);
+	width: $navPanelWidth;
+	display: none;
+
+	div h4 {
+		width: $navPanelWidth;
+	}
+
+	.list-group a {
+		background-color: $navBackgroundColor;
+	}
+}
+
