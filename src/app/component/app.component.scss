@@ -7,13 +7,27 @@ $navBackgroundColor: #b5e4bf;
 	box-shadow: 10px 0 20px -4px rgba(31, 73, 125, 0.8);
 	width: $navPanelWidth;
 	display: none;
+	position: relative;
 
-	div h4 {
+	.nav-width {
 		width: $navPanelWidth;
 	}
 
-	.list-group a {
+	li.list-group-item {
 		background-color: $navBackgroundColor;
+	}
+
+	div.list-group-item {
+		background-color: #94c59f;
+	}
+
+	.nav-selected {
+		font-weight: bold;
+	}
+
+	.nav-settings {
+		right:0px;
+		bottom:0px;
 	}
 }
 

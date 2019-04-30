@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
 import { AccountService } from 'src/app/services/account.service';
 import { AccountOverview } from '../../models/account-overview';
+import { AppService } from 'src/app/services/app.service';
 
 @Component({
 	selector: 'app-dashboard',
@@ -9,31 +10,20 @@ import { AccountOverview } from '../../models/account-overview';
 })
 export class DashboardComponent implements OnInit {
 
-	constructor(private accountService: AccountService) { }
+	constructor(
+		private accountService: AccountService,
+		private appService: AppService) { }
 
 	public accounts: AccountOverview[] = [];
 
 	ngOnInit() {
+		this.appService.setTitle('Dashboard');
 		this.getAccountOverviewInfo();
 	}
 
 	private getAccountOverviewInfo() {
-		this.accountService.GetAccountData().subscribe((res) => {
-			const accountTypes = new Set(res.data.map(item => item.accountType));
-
-			accountTypes.forEach((d) => {
-				const typeRecords = res.data.filter(obj => obj.accountType === d);
-				let value = 0;
-
-				typeRecords.forEach(element => {
-					value += element.value;
-				});
-
-				this.accounts.push({
-					accountType: d,
-					accountValue: value
-				} as AccountOverview);
-			});
+		this.accountService.GetAccountOverviewData().subscribe((res) => {
+			this.accounts = res;
 		});
 	}
 

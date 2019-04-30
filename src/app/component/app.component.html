@@ -1,21 +1,52 @@
 <div class="d-flex">
 	<div id="navPanel" class="mr-3">
 		<div>
-			<h4 class="text-nowrap text-center overflow-hidden mt-3 mb-3">{{appTitle}}</h4>
+			<h4 class="text-nowrap text-center overflow-hidden mt-3 mb-3 nav-width">{{appTitle}}</h4>
 		</div>
 		<div>
-			<div class="list-group">
-				<a href="#" class="list-group-item list-group-item-action">Expenses</a>
-				<a href="#" class="list-group-item list-group-item-action">Expenses</a>
-				<a href="#" class="list-group-item list-group-item-action">Expenses</a>
-				<a href="#" class="list-group-item list-group-item-action">Expenses</a>
-			</div>
+			<ul class="list-group">
+				<li class="list-group-item p-0  border-right-0 border-left-0">
+					<div [routerLink]="['/dashboard']" routerLinkActive="nav-selected"
+						class="p-3 pointer text-nowrap nav-width no-select">
+						Dashboard
+					</div>
+				</li>
+				<li class="list-group-item p-0  border-right-0 border-left-0" *ngFor="let root of accountRoots">
+					<div [routerLink]="['/account', root.id, root.accounts[0].accountType]"
+						routerLinkActive="nav-selected" *ngIf="root.containedAccount"
+						class="p-3 pointer text-nowrap nav-width no-select">
+						{{root.name}} {{root.value | currency}}
+					</div>
+					<div *ngIf="!root.containedAccount">
+						<div class="p-3 pointer text-nowrap nav-width no-select"
+							(click)="isCollapsed[root.id] = !isCollapsed[root.id]" aria-expanded="!isCollapsed[root.id]"
+							[attr.aria-controls]="'navCollapse_' + root.id">
+							{{root.name}} {{root.value | currency}}
+							<i class="material-icons float-right">{{ isCollapsed[root.id] ? 'expand_more' : 'expand_less' }}</i>
+						</div>
+						<div class="list-group pointer nav-width" [ngbCollapse]="isCollapsed[root.id]"
+							id="navCollapse_{{root.id}}">
+							<div *ngFor="let acc of root.accounts" [routerLink]="['/account', root.id, acc.accountType]"
+								routerLinkActive="nav-selected"
+								class="list-group-item rounded-0 border-right-0 border-left-0 no-select">
+								{{acc.accountType}} {{acc.accountValue | currency}}
+							</div>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="text-center fixed-bottom position-absolute text-nowrap nav-width mb-2">
+			<small>© {{appTitle}}</small>
+			<i class="material-icons pr-2 pointer position-absolute nav-settings" (click)="settings()" title="Settings">settings</i>
 		</div>
 	</div>
 	<div class="w-100">
-		<div>
-			<i class="material-icons p-2 pointer" (click)="toggle()" title="Menu">menu</i>
-			<i class="material-icons p-2 float-right pointer" (click)="settings()" title="Settings">settings</i>
+		<div class="d-flex m-2">
+			<div>
+				<i class="material-icons pointer" (click)="toggle()" title="Menu">menu</i>
+			</div>
+			<h4 class="text-center w-100 m-0">{{pageTitle}}</h4>
 		</div>
 		<router-outlet></router-outlet>
 	</div>

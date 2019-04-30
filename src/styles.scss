@@ -18,6 +18,17 @@ html, body {
 	cursor: pointer;
 }
 
+.no-select {
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.no-select:focus {
+    outline: none;
+}
+
 .line-graph-line {
 	&.blue {
 		stroke: steelblue !important;

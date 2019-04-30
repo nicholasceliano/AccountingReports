@@ -8,9 +8,14 @@ import { StockComponent } from './component/stock/stock.component';
 import { AccountComponent } from './component/account/account.component';
 import { APIMiddlewareInterceptor } from './interceptors/apimiddleware-interceptor';
 import { DashboardComponent } from './component/dashboard/dashboard.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { PageNotFoundComponent } from './component/structure/page-not-found/page-not-found.component';
 
 const appRoutes: Routes = [
-	{ path: '', component: DashboardComponent }
+	{ path: '', component: DashboardComponent },
+	{ path: 'dashboard', component: DashboardComponent },
+	{ path: 'account/:rootId/:type', component: AccountComponent },
+	{ path: '**', component: PageNotFoundComponent }
 ];
 
 @NgModule({
@@ -18,11 +23,13 @@ const appRoutes: Routes = [
 		AppComponent,
 		StockComponent,
 		AccountComponent,
-		DashboardComponent
+		DashboardComponent,
+		PageNotFoundComponent
 	],
 	imports: [
 		BrowserModule,
 		[RouterModule.forRoot(appRoutes)],
+		NgbModule,
 		HttpClientModule
 	],
 	exports: [RouterModule],
