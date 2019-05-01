@@ -14,12 +14,14 @@ export class AccountService {
 
 	constructor(private http: HttpClient) { }
 
-	GetAccountData(): Observable<APIResponse<Account[]>> {
-		return this.http.get<APIResponse<Account[]>>(`${environment.apiEndpoint}/account`);
+	GetAccount(accountId: string): Observable<Account> {
+		return this.GetAccountData(accountId).pipe(
+			map((res) => res.data)
+		);
 	}
 
 	GetAccountTree(): Observable<AccountTreeNode[]> {
-		return this.GetAccountData().pipe(
+		return this.GetAccountsData().pipe(
 			map((res) => {
 				let accountTree: AccountTreeNode[] = [];
 				accountTree = this.BuildAccountTree(res.data, null, accountTree);
@@ -29,6 +31,14 @@ export class AccountService {
 				return accountTree;
 			})
 		);
+	}
+
+	private GetAccountData(accountId?: string): Observable<APIResponse<Account>> {
+		return this.http.get<APIResponse<Account>>(`${environment.apiEndpoint}/account/${accountId}`);
+	}
+
+	private GetAccountsData(): Observable<APIResponse<Account[]>> {
+		return this.http.get<APIResponse<Account[]>>(`${environment.apiEndpoint}/account`);
 	}
 
 	private RollupAccountValues(accounts: AccountTreeNode[]) {

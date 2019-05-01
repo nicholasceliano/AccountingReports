@@ -11,6 +11,7 @@ import { DashboardComponent } from './component/dashboard/dashboard.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PageNotFoundComponent } from './component/structure/page-not-found/page-not-found.component';
 import { TransactionListComponent } from './component/transaction-list/transaction-list.component';
+import { AccountOverviewComponent } from './component/account-overview/account-overview.component';
 
 const appRoutes: Routes = [
 	{ path: '', component: DashboardComponent },
@@ -26,7 +27,8 @@ const appRoutes: Routes = [
 		AccountComponent,
 		DashboardComponent,
 		PageNotFoundComponent,
-		TransactionListComponent
+		TransactionListComponent,
+		AccountOverviewComponent
 	],
 	imports: [
 		BrowserModule,

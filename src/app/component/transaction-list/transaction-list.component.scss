@@ -1,0 +1,17 @@
+@import "../../../variables.scss";
+
+.transactions-list {
+	height: 30vh;
+
+	li {
+		background-color: $darker-green;
+	}
+	
+	li:nth-child(odd) {
+		background-color: $medium-green;
+	}
+
+	.loading {
+		padding-top:calc(30vh / 2 - 20px);
+	}
+}

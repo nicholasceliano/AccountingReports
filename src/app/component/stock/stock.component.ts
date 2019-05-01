@@ -8,7 +8,7 @@ import { IndexChartService } from 'src/app/services/d3/index-chart.service';
 @Component({
 	selector: 'app-stock',
 	templateUrl: './stock.component.html',
-	styleUrls: ['./stock.component.sass']
+	styleUrls: ['./stock.component.scss']
 })
 export class StockComponent implements OnInit {
 

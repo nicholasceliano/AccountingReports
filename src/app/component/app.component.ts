@@ -5,17 +5,19 @@ import { AccountService } from '../services/account.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppService } from '../services/app.service';
 import { AccountTreeNode } from '../models/account-tree-node';
+import { LoadingPanel } from '../models/interfaces/loading-panel';
 
 @Component({
 	selector: 'app-root',
 	templateUrl: './app.component.html',
 	styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit, AfterViewChecked {
+export class AppComponent implements OnInit, AfterViewChecked, LoadingPanel {
 	public appTitle = environment.appTitle;
 	public pageTitle: string;
 	public accountTree: AccountTreeNode[] = [];
 	public isCollapsed: object = {};
+	public panelLoaded = false;
 
 	constructor(
 		private accountService: AccountService,
@@ -36,6 +38,8 @@ export class AppComponent implements OnInit, AfterViewChecked {
 				const accountId = this.route.firstChild.snapshot.paramMap.get('id');
 				this.showSelectedRouteItem(accountId);
 			}
+
+			this.panelLoaded = true;
 		});
 	}
 

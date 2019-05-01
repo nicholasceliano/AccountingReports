@@ -1,7 +1,20 @@
-<div style="width:300px;">
-	<ul class="list-group">
-		<li *ngFor="let t of transactions" class="list-group-item pb-0 pt-0">
-			{{t.value}} {{t.quantity}} {{t.postDate}} {{t.desc}}
-		</li>
-	</ul>
+<div>
+	<h4>Transactions</h4>
+	<div class="transactions-list overflow-auto rounded">
+		<div *ngIf="panelLoaded">
+			<ul class="list-group">
+				<li *ngFor="let t of transactions" class="list-group-item pb-0 pt-0 d-flex">
+					<span class="text-nowrap">{{ t.postDate | date:'MM/dd/yyyy' }}</span> 
+					<span class="ml-4 mr-4 text-truncate w-100 text-nowrap" [title]="t.desc">{{t.desc}}</span> 
+					<span>{{t.value | currency}}</span>
+				</li>
+			</ul>
+			<div *ngIf="transactions.length === 0" class="text-center">No Transaction Data</div>
+		</div>
+		<div *ngIf="!panelLoaded" class="w-100 text-center h-100 loading">
+			<div class="spinner-border text-secondary" role="status">
+				<span class="sr-only">Loading...</span>
+			</div>
+		</div>
+	</div>
 </div>

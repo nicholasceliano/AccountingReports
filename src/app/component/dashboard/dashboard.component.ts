@@ -6,7 +6,7 @@ import { AccountTreeNode } from 'src/app/models/account-tree-node';
 @Component({
 	selector: 'app-dashboard',
 	templateUrl: './dashboard.component.html',
-	styleUrls: ['./dashboard.component.sass']
+	styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
 

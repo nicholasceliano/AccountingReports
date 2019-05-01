@@ -3,7 +3,7 @@
 		<div>
 			<h4 class="text-nowrap text-center overflow-hidden mt-3 mb-3 nav-width">{{appTitle}}</h4>
 		</div>
-		<div class="nav-width nav-scrollable">
+		<div *ngIf="panelLoaded" class="nav-width nav-scrollable">
 			<ul class="list-group">
 				<li class="list-group-item p-0 border-0 rounded-0">
 					<div [routerLink]="['/dashboard']" routerLinkActive="nav-selected"
@@ -12,6 +12,11 @@
 				</li>
 				<ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: accountTree }"></ng-container>
 			</ul>
+		</div>
+		<div *ngIf="!panelLoaded" class="w-100 text-center loading">
+			<div class="spinner-border text-secondary" role="status">
+				<span class="sr-only">Loading...</span>
+			</div>
 		</div>
 		<div class="text-center fixed-bottom position-absolute text-nowrap nav-width mb-2">
 			<small>© {{appTitle}}</small>
@@ -22,9 +27,7 @@
 		<div class="overflow-auto h-100">
 			<i class="material-icons pointer position-fixed m-2" (click)="toggle()" title="Menu">menu</i>
 			<h4 class="text-center w-100 mt-2">{{pageTitle}}</h4>
-			<div class="ml-5 mb-2">
-				<router-outlet></router-outlet>
-			</div>
+			<router-outlet></router-outlet>
 		</div>
 	</div>
 </div>

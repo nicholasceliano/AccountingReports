@@ -1,8 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~bootstrap/dist/css/bootstrap.min.css';
 @import '~material-design-icons/iconfont/material-icons.css';
-
-$light-green: #e2ffe5;
+@import '../src/variables.scss';
 
 body {
 	background-color: $light-green;

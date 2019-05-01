@@ -1,8 +1,8 @@
+@import '../../variables.scss';
 $navPanelWidth: 300px;
-$navBackgroundColor: #b5e4bf;
 
 #navPanel {
-	background-color: $navBackgroundColor;
+	background-color: $medium-green;
 	height: 100vh;
 	box-shadow: 10px 0 20px -4px rgba(31, 73, 125, 0.8);
 	width: $navPanelWidth;
@@ -13,11 +13,11 @@ $navBackgroundColor: #b5e4bf;
 	}
 
 	li.list-group-item {
-		background-color: $navBackgroundColor;
+		background-color: $medium-green;
 	}
 
 	div.list-group-item, .nav-sub-item {
-		background-color: #94c59f;
+		background-color: $darker-green;
 	}
 
 	div.nav-collapse {
@@ -42,6 +42,11 @@ $navBackgroundColor: #b5e4bf;
 	
 	::-webkit-scrollbar-track {
 		background: transparent; 
+	}
+
+	.loading {
+		height:calc(100vh - 100px);
+		margin-top:calc(50vh - 44px - 20px);
 	}
 }
 
