@@ -6,7 +6,6 @@ $navBackgroundColor: #b5e4bf;
 	height: 100vh;
 	box-shadow: 10px 0 20px -4px rgba(31, 73, 125, 0.8);
 	width: $navPanelWidth;
-	display: none;
 	position: relative;
 
 	.nav-width {
@@ -17,8 +16,13 @@ $navBackgroundColor: #b5e4bf;
 		background-color: $navBackgroundColor;
 	}
 
-	div.list-group-item {
+	div.list-group-item, .nav-sub-item {
 		background-color: #94c59f;
+	}
+
+	div.nav-collapse {
+		border-left: 1px solid rgba(0, 0, 0, 0.125);
+		border-top: 1px solid rgba(0, 0, 0, 0.125);
 	}
 
 	.nav-selected {
@@ -29,5 +33,19 @@ $navBackgroundColor: #b5e4bf;
 		right:0px;
 		bottom:0px;
 	}
+
+	.nav-scrollable {
+		height:calc(100vh - 100px);
+		overflow-x:hidden;
+		overflow-y:auto;
+	}
+	
+	::-webkit-scrollbar-track {
+		background: transparent; 
+	}
 }
 
+#app-content {
+	height:100vh;
+	width:100vw;
+}

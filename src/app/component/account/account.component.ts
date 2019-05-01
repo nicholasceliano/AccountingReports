@@ -13,13 +13,12 @@ export class AccountComponent implements OnInit {
 		private route: ActivatedRoute,
 		private appService: AppService) { }
 
+	public accountId: string;
+
 	ngOnInit() {
-		this.route.params.subscribe(params => {
-			/* tslint:disable:no-string-literal */
-			this.appService.setTitle(params['type']);
-			console.log(params['rootId'] + ' ' + params['type']);
-			/* tslint:enable:no-string-literal */
+		this.route.paramMap.subscribe(params => {
+			this.accountId = params.get('id');
+			this.appService.setTitle(this.accountId);
 		});
 	}
-
 }

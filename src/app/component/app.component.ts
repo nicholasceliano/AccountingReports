@@ -1,35 +1,46 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, OnInit } from '@angular/core';
 import $ from 'jquery';
 import { environment } from 'src/environments/environment';
 import { AccountService } from '../services/account.service';
-import { AccountRoot } from '../models/account-root';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AppService } from '../services/app.service';
+import { AccountTreeNode } from '../models/account-tree-node';
 
 @Component({
 	selector: 'app-root',
 	templateUrl: './app.component.html',
 	styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewChecked {
 	public appTitle = environment.appTitle;
 	public pageTitle: string;
-	public accountRoots: AccountRoot[] = [];
+	public accountTree: AccountTreeNode[] = [];
 	public isCollapsed: object = {};
 
 	constructor(
 		private accountService: AccountService,
 		private route: ActivatedRoute,
-		private appService: AppService) {}
+		private router: Router,
+		private appService: AppService,
+		private myElement: ElementRef) {}
 
 	ngOnInit() {
 		this.appService.getTitle().subscribe(appTitle => this.pageTitle = appTitle);
 
-		this.accountService.GetAccountRootData().subscribe((res) => {
-			this.accountRoots = res;
+		this.accountService.GetAccountTree().subscribe((res) => {
+			this.accountTree = res;
 
-			this.bindCollapseObjects();
+			this.bindCollapseObjects(this.accountTree);
+
+			if (this.router.url.indexOf('/account') > -1) {
+				const accountId = this.route.firstChild.snapshot.paramMap.get('id');
+				this.showSelectedRouteItem(accountId);
+			}
 		});
+	}
+
+	ngAfterViewChecked() {
+		this.scrollToSelectedNavRoute();
 	}
 
 	public toggle() {
@@ -40,10 +51,26 @@ export class AppComponent implements OnInit {
 		alert('Not Implemented');
 	}
 
-	private bindCollapseObjects() {
-		this.accountRoots.forEach(e => {
-			const rootId = this.route.firstChild.snapshot.paramMap.get('rootId');
-			this.isCollapsed[e.id] = rootId === e.id ? false : true;
+	private scrollToSelectedNavRoute() {
+		const el = this.myElement.nativeElement.querySelector('.nav-selected');
+		if (el != null) {
+			el.scrollIntoView({ behavior: 'smooth' });
+		}
+	}
+
+	private showSelectedRouteItem(accountId: string) {
+		const parentId = this.isCollapsed[accountId].parentId;
+
+		if (parentId) {
+			this.isCollapsed[parentId].collapsed = false;
+			this.showSelectedRouteItem(parentId);
+		}
+	}
+
+	private bindCollapseObjects(array: AccountTreeNode[], parentId: string = null) {
+		array.forEach(e => {
+			this.bindCollapseObjects(e.accounts, e.parentId);
+			this.isCollapsed[e.id] = { collapsed: true, parentId: e.parentId };
 		});
 	}
 }

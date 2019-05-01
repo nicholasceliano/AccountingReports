@@ -10,11 +10,12 @@ import { APIMiddlewareInterceptor } from './interceptors/apimiddleware-intercept
 import { DashboardComponent } from './component/dashboard/dashboard.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PageNotFoundComponent } from './component/structure/page-not-found/page-not-found.component';
+import { TransactionListComponent } from './component/transaction-list/transaction-list.component';
 
 const appRoutes: Routes = [
 	{ path: '', component: DashboardComponent },
 	{ path: 'dashboard', component: DashboardComponent },
-	{ path: 'account/:rootId/:type', component: AccountComponent },
+	{ path: 'account/:id', component: AccountComponent },
 	{ path: '**', component: PageNotFoundComponent }
 ];
 
@@ -24,7 +25,8 @@ const appRoutes: Routes = [
 		StockComponent,
 		AccountComponent,
 		DashboardComponent,
-		PageNotFoundComponent
+		PageNotFoundComponent,
+		TransactionListComponent
 	],
 	imports: [
 		BrowserModule,

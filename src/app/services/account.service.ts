@@ -4,8 +4,7 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Account } from '../models/account';
 import { APIResponse } from '../models/apiresponse';
-import { AccountOverview } from '../models/account-overview';
-import { AccountRoot } from '../models/account-root';
+import { AccountTreeNode } from '../models/account-tree-node';
 import { map } from 'rxjs/operators';
 
 @Injectable({
@@ -19,77 +18,46 @@ export class AccountService {
 		return this.http.get<APIResponse<Account[]>>(`${environment.apiEndpoint}/account`);
 	}
 
-	GetAccountOverviewData(): Observable<AccountOverview[]> {
+	GetAccountTree(): Observable<AccountTreeNode[]> {
 		return this.GetAccountData().pipe(
 			map((res) => {
-				const accounts: AccountOverview[] = [];
-				const accountTypes = new Set(res.data.map(item => item.accountType));
+				let accountTree: AccountTreeNode[] = [];
+				accountTree = this.BuildAccountTree(res.data, null, accountTree);
 
-				accountTypes.forEach((d) => {
-					const typeRecords = res.data.filter(obj => obj.accountType === d);
-					let value = 0;
-					let rootParent: Account;
+				this.RollupAccountValues(accountTree);
 
-					typeRecords.forEach(e => {
-						value += e.value;
-
-						if (!rootParent) {
-							rootParent = this.GetRootParentAccount(res.data, e);
-						}
-					});
-
-					accounts.push({
-						accountType: d,
-						accountValue: value,
-						parentId: rootParent.parentId,
-						parentName: rootParent.parentName,
-						parentRoot: rootParent.parentRoot,
-					} as AccountOverview);
-				});
-
-				return accounts;
+				return accountTree;
 			})
 		);
 	}
 
-	GetAccountRootData(): Observable<AccountRoot[]> {
-		return this.GetAccountOverviewData().pipe(
-			map((res) => {
-				const roots: AccountRoot[] = [];
-				const rootAccounts = new Set(res.map(item => item.parentRoot ? item.parentId : null));
+	private RollupAccountValues(accounts: AccountTreeNode[]) {
+		let totalValue = 0;
 
-				rootAccounts.forEach((d) => {
-					const accountOverviewRecords = res.filter(obj => obj.parentId === d);
-					let totalAccountValue = 0;
+		accounts.forEach(e => {
+			const rootValue = e.value;
+			const accountValue = this.RollupAccountValues(e.accounts);
+			totalValue += rootValue + accountValue;
 
-					accountOverviewRecords.forEach(e => {
-						totalAccountValue += e.accountValue;
-					});
+			e.value = accountValue + rootValue;
+		});
 
-					roots.push({
-						id: d,
-						name: accountOverviewRecords[0].parentName,
-						value: totalAccountValue,
-						accounts: accountOverviewRecords,
-						containedAccount: this.isRootAccountContained(accountOverviewRecords),
-					} as AccountRoot);
-				});
-
-				return roots;
-			})
-		);
+		return totalValue;
 	}
 
-	private isRootAccountContained(aoRecs: AccountOverview[]) {
-		return (aoRecs.length === 1 && aoRecs[0].parentName.toLowerCase().indexOf(aoRecs[0].accountType.toLowerCase()) > -1);
-	}
+	private BuildAccountTree(data: Account[], parentId: string, roots: AccountTreeNode[]) {
+		const subAccounts = new Set(data.filter(item => item.parentId === parentId));
 
-	private GetRootParentAccount(typeRecords: Account[], acc: Account) {
-		if (acc.parentRoot) {
-			return acc;
-		} else {
-			const parentRecord = typeRecords.find(a => a.accountId === acc.parentId);
-			return this.GetRootParentAccount(typeRecords, parentRecord);
-		}
+		subAccounts.forEach(e => {
+			roots.push({
+				id: e.accountId,
+				parentId: e.parentId,
+				name: e.accountName,
+				value: e.value,
+				accounts: this.BuildAccountTree(data, e.accountId, []),
+			} as AccountTreeNode);
+		});
+
+		return roots;
 	}
 }

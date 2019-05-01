@@ -1,7 +1,7 @@
 import { Component, OnInit, Output } from '@angular/core';
 import { AccountService } from 'src/app/services/account.service';
-import { AccountOverview } from '../../models/account-overview';
 import { AppService } from 'src/app/services/app.service';
+import { AccountTreeNode } from 'src/app/models/account-tree-node';
 
 @Component({
 	selector: 'app-dashboard',
@@ -14,16 +14,16 @@ export class DashboardComponent implements OnInit {
 		private accountService: AccountService,
 		private appService: AppService) { }
 
-	public accounts: AccountOverview[] = [];
+	public accountTree: AccountTreeNode[] = [];
 
 	ngOnInit() {
 		this.appService.setTitle('Dashboard');
-		this.getAccountOverviewInfo();
+		this.getAccountDashboardInfo();
 	}
 
-	private getAccountOverviewInfo() {
-		this.accountService.GetAccountOverviewData().subscribe((res) => {
-			this.accounts = res;
+	private getAccountDashboardInfo() {
+		this.accountService.GetAccountTree().subscribe((res) => {
+			this.accountTree = res;
 		});
 	}
 

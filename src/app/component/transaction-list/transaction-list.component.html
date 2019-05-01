@@ -1,0 +1,7 @@
+<div style="width:300px;">
+	<ul class="list-group">
+		<li *ngFor="let t of transactions" class="list-group-item pb-0 pt-0">
+			{{t.value}} {{t.quantity}} {{t.postDate}} {{t.desc}}
+		</li>
+	</ul>
+</div>
