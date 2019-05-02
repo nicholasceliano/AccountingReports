@@ -1,4 +1,4 @@
-import { AfterViewChecked, Component, ElementRef, OnInit } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, OnInit, Renderer } from '@angular/core';
 import $ from 'jquery';
 import { environment } from 'src/environments/environment';
 import { AccountService } from '../services/account.service';
@@ -18,6 +18,8 @@ export class AppComponent implements OnInit, AfterViewChecked, LoadingPanel {
 	public accountTree: AccountTreeNode[] = [];
 	public isCollapsed: object = {};
 	public panelLoaded = false;
+	public selectedNavId: string;
+	private initialLoad = true;
 
 	constructor(
 		private accountService: AccountService,
@@ -34,17 +36,23 @@ export class AppComponent implements OnInit, AfterViewChecked, LoadingPanel {
 
 			this.bindCollapseObjects(this.accountTree);
 
-			if (this.router.url.indexOf('/account') > -1) {
-				const accountId = this.route.firstChild.snapshot.paramMap.get('id');
-				this.showSelectedRouteItem(accountId);
-			}
+			const routeId = this.route.firstChild.snapshot.paramMap.get('id');
+			this.setRouteSelection(this.router.url, routeId);
 
 			this.panelLoaded = true;
 		});
 	}
 
+	routeTo(routeValue: string[]) {
+		this.setRouteSelection(routeValue[0], routeValue[1]);
+		this.router.navigate(routeValue);
+	}
+
 	ngAfterViewChecked() {
-		this.scrollToSelectedNavRoute();
+		if (this.panelLoaded && this.initialLoad) {
+			this.scrollToSelectedNavRoute();
+			this.initialLoad = false;
+		}
 	}
 
 	public toggle() {
@@ -53,6 +61,28 @@ export class AppComponent implements OnInit, AfterViewChecked, LoadingPanel {
 
 	public settings() {
 		alert('Not Implemented');
+	}
+
+	private setRouteSelection(routerUrl: string, routeId: string) {
+		if (routerUrl.indexOf('/account') > -1 && routeId) {
+			this.selectedNavId = routeId;
+
+			const selectedAccountNode = this.accountService.GetAccountTreeNode(routeId, this.accountTree);
+			const subAccountCt = this.accountService.GetAccountTreeSubAccountsCt(routeId, this.accountTree);
+			const accountHeirarchy = this.accountService.GetAccountTreeHeirarchy(routeId, this.accountTree, this.accountTree);
+
+			this.pageTitle = selectedAccountNode.name;
+			this.appService.setAccountSubAccountsCt(subAccountCt);
+			this.appService.setAccountHierarchy(accountHeirarchy);
+
+			this.showSelectedRouteItem(routeId);
+		} else if (routerUrl === '/dashboard') {
+			this.selectedNavId = 'dashboard';
+			this.pageTitle = 'Dashboard';
+		} else if (routerUrl === '/reports') {
+			this.selectedNavId = 'reports';
+			this.pageTitle = 'Reports';
+		}
 	}
 
 	private scrollToSelectedNavRoute() {

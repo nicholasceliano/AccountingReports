@@ -1,11 +1,11 @@
 <div>
-	<h4>Transactions</h4>
+	<h5><u>Transactions</u></h5>
 	<div class="transactions-list overflow-auto rounded">
 		<div *ngIf="panelLoaded">
 			<ul class="list-group">
 				<li *ngFor="let t of transactions" class="list-group-item pb-0 pt-0 d-flex">
-					<span class="text-nowrap">{{ t.postDate | date:'MM/dd/yyyy' }}</span> 
-					<span class="ml-4 mr-4 text-truncate w-100 text-nowrap" [title]="t.desc">{{t.desc}}</span> 
+					<span class="text-nowrap">{{ t.postDate | date:'MM/dd/yyyy' }}</span>
+					<span class="ml-4 mr-4 text-truncate w-100 text-nowrap" [title]="t.desc">{{t.desc}}</span>
 					<span>{{t.value | currency}}</span>
 				</li>
 			</ul>

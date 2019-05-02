@@ -1,0 +1,11 @@
+.account-overview {
+	height: 30vh;
+
+	.small-line {
+		line-height: 15px;
+	}
+
+	.loading {
+		padding-top:calc(30vh / 2 - 20px);
+	}
+}

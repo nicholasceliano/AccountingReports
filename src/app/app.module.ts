@@ -12,11 +12,14 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PageNotFoundComponent } from './component/structure/page-not-found/page-not-found.component';
 import { TransactionListComponent } from './component/transaction-list/transaction-list.component';
 import { AccountOverviewComponent } from './component/account-overview/account-overview.component';
+import { ReportsComponent } from './component/reports/reports.component';
+import { AccountReportsComponent } from './component/account-reports/account-reports.component';
 
 const appRoutes: Routes = [
 	{ path: '', component: DashboardComponent },
 	{ path: 'dashboard', component: DashboardComponent },
 	{ path: 'account/:id', component: AccountComponent },
+	{ path: 'reports', component: ReportsComponent },
 	{ path: '**', component: PageNotFoundComponent }
 ];
 
@@ -28,7 +31,9 @@ const appRoutes: Routes = [
 		DashboardComponent,
 		PageNotFoundComponent,
 		TransactionListComponent,
-		AccountOverviewComponent
+		AccountOverviewComponent,
+		ReportsComponent,
+		AccountReportsComponent
 	],
 	imports: [
 		BrowserModule,

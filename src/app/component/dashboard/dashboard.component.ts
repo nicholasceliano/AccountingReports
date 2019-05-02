@@ -1,6 +1,5 @@
-import { Component, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AccountService } from 'src/app/services/account.service';
-import { AppService } from 'src/app/services/app.service';
 import { AccountTreeNode } from 'src/app/models/account-tree-node';
 
 @Component({
@@ -10,14 +9,11 @@ import { AccountTreeNode } from 'src/app/models/account-tree-node';
 })
 export class DashboardComponent implements OnInit {
 
-	constructor(
-		private accountService: AccountService,
-		private appService: AppService) { }
+	constructor(private accountService: AccountService) { }
 
 	public accountTree: AccountTreeNode[] = [];
 
 	ngOnInit() {
-		this.appService.setTitle('Dashboard');
 		this.getAccountDashboardInfo();
 	}
 

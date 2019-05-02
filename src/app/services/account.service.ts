@@ -33,6 +33,66 @@ export class AccountService {
 		);
 	}
 
+	GetAccountTreeNode(accountId: string, accounts: AccountTreeNode[]): AccountTreeNode {
+		let accountNode: AccountTreeNode;
+		for (const a of accounts) {
+			if (accountNode) {
+				break;
+			} else {
+				if (a.id === accountId) {
+					accountNode = a;
+					break;
+				} else {
+					accountNode = this.GetAccountTreeNode(accountId, a.accounts);
+				}
+			}
+		}
+
+		return accountNode;
+	}
+
+	GetAccountTreeHeirarchy(accountId: string, accounts: AccountTreeNode[], origAccounts: AccountTreeNode[] = null): string[] {
+		let treeHeirarchy: string[] = [];
+
+		const accFilter = accounts.filter(x => x.id === accountId);
+
+		if (accFilter.length > 0) {
+			treeHeirarchy.push(accFilter[0].name);
+			if (accFilter[0].parentId) {
+				treeHeirarchy = treeHeirarchy.concat(this.GetAccountTreeHeirarchy(accFilter[0].parentId, origAccounts, origAccounts));
+			}
+		} else {
+			for (const a of accounts) {
+				const e = this.GetAccountTreeHeirarchy(accountId, a.accounts, origAccounts);
+				if (e.length > 0) {
+					treeHeirarchy = treeHeirarchy.concat(e);
+					break;
+				}
+			}
+		}
+
+		return treeHeirarchy;
+	}
+
+	GetAccountTreeSubAccountsCt(accountId: string, accounts: AccountTreeNode[]): number {
+		let subAccountsCt = 0;
+
+		for (const a of accounts) {
+			if (a.id === accountId || accountId == null) {
+				subAccountsCt += a.accounts.length;
+				subAccountsCt += this.GetAccountTreeSubAccountsCt(null, a.accounts);
+
+				if (accountId) {
+					break;
+				}
+			} else {
+				subAccountsCt += this.GetAccountTreeSubAccountsCt(accountId, a.accounts);
+			}
+		}
+
+		return subAccountsCt;
+	}
+
 	private GetAccountData(accountId?: string): Observable<APIResponse<Account>> {
 		return this.http.get<APIResponse<Account>>(`${environment.apiEndpoint}/account/${accountId}`);
 	}

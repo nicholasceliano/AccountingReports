@@ -6,11 +6,14 @@
 		<div *ngIf="panelLoaded" class="nav-width nav-scrollable">
 			<ul class="list-group">
 				<li class="list-group-item p-0 border-0 rounded-0">
-					<div [routerLink]="['/dashboard']" routerLinkActive="nav-selected"
-						class="p-2 pointer text-nowrap w-100 no-select">Dashboard
-					</div>
+					<div [ngClass]="{'nav-selected': selectedNavId == 'dashboard'}"  (click)="routeTo(['/dashboard']);" 
+					class="p-2 pointer text-nowrap w-100 no-select">Dashboard</div>
 				</li>
 				<ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: accountTree }"></ng-container>
+				<li class="list-group-item p-0 border-0 rounded-0">
+					<div [ngClass]="{'nav-selected': selectedNavId == 'reports'}"  (click)="routeTo(['/reports']);" 
+					class="p-2 pointer text-nowrap w-100 no-select nav-collapse">Reports</div>
+				</li>
 			</ul>
 		</div>
 		<div *ngIf="!panelLoaded" class="w-100 text-center loading">
@@ -26,7 +29,7 @@
 	<div id="app-content">
 		<div class="overflow-auto h-100">
 			<i class="material-icons pointer position-fixed m-2" (click)="toggle()" title="Menu">menu</i>
-			<h4 class="text-center w-100 mt-2">{{pageTitle}}</h4>
+			<h3 class="text-center w-100 mt-2">{{pageTitle}}</h3>
 			<router-outlet></router-outlet>
 		</div>
 	</div>
@@ -36,7 +39,7 @@
 	<li class="list-group-item p-0 border-0 rounded-0" *ngFor="let acc of accountTree">
 		<div *ngIf="acc.accounts.length === 0">
 			<div class="p-2 pointer no-select nav-collapse nav-sub-item d-flex"
-				[routerLink]="['/account', acc.id]" routerLinkActive="nav-selected">
+				[ngClass]="{'nav-selected': selectedNavId == acc.id}" (click)="routeTo(['/account', acc.id])">
 				<span class="text-truncate w-100" [title]="acc.name">{{acc.name}}</span>
 				<span>{{acc.value | currency}}</span>
 			</div>
@@ -45,10 +48,10 @@
 			<div class="p-2 pointer nav-collapse" (click)="isCollapsed[acc.id].collapsed = !isCollapsed[acc.id].collapsed" 
 				aria-expanded="!isCollapsed[acc.id].collapsed" [attr.aria-controls]="'navCollapse_' + acc.id">
 				<span class="d-flex">
-					<span class="text-truncate w-100 no-select" [routerLink]="['/account', acc.id]" routerLinkActive="nav-selected" 
-					(click)="$event.stopPropagation()" [title]="acc.name">{{acc.name}}</span>
-					<span class="no-select" [routerLink]="['/account', acc.id]" routerLinkActive="nav-selected"
-					(click)="$event.stopPropagation()">{{acc.value | currency}}</span>
+					<span class="text-truncate w-100 no-select" [ngClass]="{'nav-selected': selectedNavId == acc.id}" 
+					(click)="routeTo(['/account', acc.id]);$event.stopPropagation();" [title]="acc.name">{{acc.name}}</span>
+					<span class="no-select" [ngClass]="{'nav-selected': selectedNavId == acc.id}" 
+					(click)="routeTo(['/account', acc.id]);$event.stopPropagation();">{{acc.value | currency}}</span>
 					<i class="material-icons pl-2">{{ isCollapsed[acc.id].collapsed ? 'add' : 'remove' }}</i>
 				</span>
 			</div>
